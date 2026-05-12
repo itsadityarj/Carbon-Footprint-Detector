@@ -1,24 +1,45 @@
 # Carbon Footprint Detector 🌍
 
-Web-based application aimed at assessing, tracking, and visualizing individual carbon footprints based on personal consumption habits and activity routines.
+Web-based application for assessing, tracking, and visualizing individual carbon footprints based on personal consumption habits and activity routines.
 
 ## 🚀 Overview
 
-The Carbon Footprint Detector enables individuals to evaluate their personal contribution to climate change by calculating carbon-equivalent emissions produced through three core activities:
+The Carbon Footprint Detector helps users evaluate their personal contribution to climate change by calculating carbon-equivalent emissions across three main categories:
 
-- **Consumption of Energy:** Residential use of electricity and heat.
-- **Transportation Habits:** Personal transportation patterns, regardless of the chosen means of transport.
-- **Consumer Behavior:** Dietary patterns and the effects of consuming products.
+- **Consumption of Energy:** Residential electricity and heat usage.
+- **Transportation Habits:** Personal travel patterns across all transport modes.
+- **Consumer Behavior:** Dietary choices and product consumption impacts.
 
 ## ✨ Core Features
 
-- **Precise Calculations:** Translates data into CO₂ equivalent emissions based on predetermined emission factors.
-- **Prescriptive Analysis:** Provides actionable recommendations to minimize your carbon footprint.
-- **Tracking Over Time:** Enables long-term monitoring of progress and footprint reductions with graphical reports.
-- **Real-Time Data Visualization:** Offers immediate feedback on high-carbon emitting behaviors.
+- **Precise Calculations:** Converts user inputs into CO₂-equivalent emissions using emission factors.
+- **Prescriptive Analysis:** Delivers actionable recommendations for footprint reduction.
+- **Tracking Over Time:** Supports long-term progress monitoring with visual reporting.
+- **Real-Time Visualization:** Shows immediate feedback for high-carbon behaviors.
 
 ## 🛠️ Tech Stack
 
 - **Backend:** Node.js
 - **Frontend:** HTML5, CSS3, JavaScript
 - **Emission Factor Logic:** JSON
+- **Data Analytics:** Python 3
+
+## 📈 Analytics and Reporting
+
+The analytics module (`plot.py`) extends the web interface with deeper data exploration:
+
+- **Comparative Analysis:** Benchmark personal metrics against world and India standards.
+- **Correlation Tracking:** Visualize relationships between consumption categories (e.g., energy vs. transport).
+- **Distribution Analysis:** Display footprint distributions using box plots and histograms.
+
+### Analytics Libraries
+
+- Matplotlib
+- NumPy
+- Seaborn
+
+### Analytics Scope
+
+- Radar charts
+- Scatter plots
+- Distribution histograms
