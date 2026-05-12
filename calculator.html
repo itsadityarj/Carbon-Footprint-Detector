@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Footprint Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="myhead">
+            <img class="logo" src="new208.png">
+            <h1 class="mytitle">CarbonCalculator</h1>
+        </div>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="calculator.html">Calculator</a>
+            <a href="contact.html">Contact</a>
+            <a href="login.html">Login</a>
+            <a href="signup.html">Sign Up</a>
+        </nav>
+    </header>
+
+    <section class="calculator-section">
+        <div class="calculator-container" style="text-align: center;">
+            <h2>Carbon Footprint Calculator</h2>
+            <label style="text-align: left;">For previous 12 months:</label>
+            <form id="carbonForm">
+                <div class="form-group">
+                    <label for="carKm">Distance traveled by car (km):</label>
+                    <input type="number" id="carKm" name="carKm" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="busKm">Distance traveled by bus (km):</label>
+                    <input type="number" id="busKm" name="busKm" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="flightKm">Distance traveled by flight (km):</label>
+                    <input type="number" id="flightKm" name="flightKm" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="electricity">Electricity usage (kWh):</label>
+                    <input type="number" id="electricity" name="electricity" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="naturalGas">Natural gas usage (therms):</label>
+                    <input type="number" id="naturalGas" name="naturalGas" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="generalWaste">General waste (kg):</label>
+                    <input type="number" id="generalWaste" name="generalWaste" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="recycling">Recycled waste (kg):</label>
+                    <input type="number" id="recycling" name="recycling" min="0" required>
+                </div>
+                <button type="button" class="btn" onclick="calculateCarbonFootprint()">Calculate</button>
+            </form>
+            <div id="result" class="result"></div>
+        </div>
+    </section>
+
+    <footer style="margin-top: 10%;">
+        <p>&copy; 2024 CarbonCalculator</p>
+        <p>
+            <a href="#">Privacy Policy</a> |
+            <a href="#">Terms of Service</a>
+        </p>
+        <p>
+            Follow us:
+            <a href="#">Facebook</a>,
+            <a href="#">Twitter</a>,
+            <a href="#">Instagram</a>
+        </p>
+    </footer>
+
+    <script>
+        async function calculateCarbonFootprint() {
+            try {
+                const emissionFactors = {
+                    car: 0.271,
+                    bus: 0.103,
+                    flight: 0.255,
+                    electricity: 0.233,
+                    naturalGas: 2.204,
+                    generalWaste: 0.75,
+                    recycling: -0.25,
+                };
+
+                const carKm = parseFloat(document.getElementById('carKm').value) || 0;
+                const busKm = parseFloat(document.getElementById('busKm').value) || 0;
+                const flightKm = parseFloat(document.getElementById('flightKm').value) || 0;
+                const electricity = parseFloat(document.getElementById('electricity').value) || 0;
+                const naturalGas = parseFloat(document.getElementById('naturalGas').value) || 0;
+                const generalWaste = parseFloat(document.getElementById('generalWaste').value) || 0;
+                const recycling = parseFloat(document.getElementById('recycling').value) || 0;
+
+                const transportFootprint = (carKm * emissionFactors.car) + (busKm * emissionFactors.bus) + (flightKm * emissionFactors.flight);
+                const energyFootprint = (electricity * emissionFactors.electricity) + (naturalGas * emissionFactors.naturalGas);
+                const wasteFootprint = (generalWaste * emissionFactors.generalWaste) + (recycling * emissionFactors.recycling);
+                const totalFootprint = transportFootprint + energyFootprint + wasteFootprint;
+
+                const currentUser = JSON.parse(localStorage.getItem('loggedInUser'));
+                if (!currentUser || !currentUser.username) {
+                    alert("Please log in to save your carbon footprint data.");
+                    window.location.href = "login.html";
+                    return;
+                }
+
+                const userData = {
+                    name: currentUser.fullname || "Anonymous User",
+                    email: currentUser.email || "N/A",
+                    carbonFootprint: {
+                        transport: transportFootprint.toFixed(2),
+                        energy: energyFootprint.toFixed(2),
+                        waste: wasteFootprint.toFixed(2),
+                        total: totalFootprint.toFixed(2),
+                    },
+                };
+
+                console.log("Data being sent to the server:", userData);
+                localStorage.setItem('userData', JSON.stringify(userData));
+
+                const response = await fetch('http://localhost:3000/data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userData),
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log("Server response:", result);
+                    localStorage.setItem('carbonFootprintData', JSON.stringify(userData.carbonFootprint));
+                    alert("Data saved successfully!");
+                    window.location.href = 'result.html';
+                } else {
+                    const errorData = await response.json();
+                    console.error("Error response from server:", errorData);
+                    alert(`Failed to save data: ${errorData.message || "Unknown server error."}`);
+                }
+            } catch (error) {
+                console.error("Network or server error:", error);
+                alert("Unable to connect to the server. Redirecting to results...");
+            }
+        }
+
+    </script>
+
+
+</body>
+
+</html>

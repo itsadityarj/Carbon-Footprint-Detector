@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Footprint Results</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="myhead">
+            <img class="logo" src="new208.png">
+            <h1 class="mytitle">CarbonCalculator</h1>
+        </div>
+
+        <nav style="margin-top: auto;">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="calculator.html">Calculator</a>
+            <a href="contact.html">Contact</a>
+            <a href="login.html">Login</a>
+            <a href="signup.html">Sign Up</a>
+        </nav>
+    </header>
+
+    <section class="results-section">
+        <div class="results-container" style="text-align: center;">
+            <h2>Your Carbon Footprint Results</h2>
+            <canvas id="comparisonChart" width="600" height="400"></canvas>
+            <p
+                style="color: white;margin: 0 auto; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); font-size: 18px; margin-top: 10px;">
+                Above is a
+                comparison of your carbon footprint against other users in the database.</p>
+        </div>
+    </section>
+
+    <footer style="margin-top: 10%;">
+        <p>&copy; 2024 CarbonCalculator</p>
+        <p>
+            <a href="#">Privacy Policy</a> |
+            <a href="#">Terms of Service</a>
+        </p>
+        <p>
+            Follow us:
+            <a href="#">Facebook</a>,
+            <a href="#">Twitter</a>,
+            <a href="#">Instagram</a>
+        </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                const response = await fetch('http://localhost:3000/data');
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status}`);
+                }
+                const database = await response.json();
+
+                const currentUser = database.users.find(user => user.name === "testuser");
+                if (!currentUser) {
+                    alert("No current user data found. Please ensure the database includes the current user.");
+                    return;
+                }
+
+                const userFootprint = {
+                    transport: parseFloat(currentUser.carbonFootprint.transport),
+                    energy: parseFloat(currentUser.carbonFootprint.energy),
+                    waste: parseFloat(currentUser.carbonFootprint.waste),
+                };
+
+                const indiaStandard = {
+                    transport: 800, 
+                    energy: 1700,   
+                    waste: 100     
+                };
+
+                const otherUsers = database.users.filter(user => user.name !== "testuser");
+
+                if (otherUsers.length === 0) {
+                    alert("No other user data found for comparison.");
+                    return;
+                }
+
+                let totalTransport = 0, totalEnergy = 0, totalWaste = 0;
+                otherUsers.forEach(user => {
+                    totalTransport += parseFloat(user.carbonFootprint.transport);
+                    totalEnergy += parseFloat(user.carbonFootprint.energy);
+                    totalWaste += parseFloat(user.carbonFootprint.waste);
+                });
+
+                const averageFootprint = {
+                    transport: totalTransport / otherUsers.length,
+                    energy: totalEnergy / otherUsers.length,
+                    waste: totalWaste / otherUsers.length,
+                };
+
+                const labels = ["Average of Others", "You", "India Standard"];
+                const transportData = [averageFootprint.transport, userFootprint.transport, indiaStandard.transport];
+                const energyData = [averageFootprint.energy, userFootprint.energy, indiaStandard.energy];
+                const wasteData = [averageFootprint.waste, userFootprint.waste, indiaStandard.waste];
+
+                const ctx = document.getElementById('comparisonChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Transport (kg CO₂)',
+                                data: transportData,
+                                backgroundColor: '#4caf50',
+                            },
+                            {
+                                label: 'Energy (kg CO₂)',
+                                data: energyData,
+                                backgroundColor: '#2196f3',
+                            },
+                            {
+                                label: 'Waste (kg CO₂)',
+                                data: wasteData,
+                                backgroundColor: '#ff5722',
+                            }
+                        ],
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    color: 'white' 
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: context => `${context.dataset.label}: ${context.raw.toFixed(2)} kg CO₂`,
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Categories',
+                                    color: 'white' 
+                                },
+                                ticks: {
+                                    color: 'white' 
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Carbon Footprint (kg CO₂)',
+                                    color: 'white' 
+                                },
+                                ticks: {
+                                    color: 'white' 
+                                }
+                            }
+                        }
+                    }
+
+                });
+            } catch (error) {
+                console.error("Error loading chart data:", error);
+                alert("Unable to load the results. Please try again later.");
+            }
+        });
+    </script>
+
+</body>
+
+</html>

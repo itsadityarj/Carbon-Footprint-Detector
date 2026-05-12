@@ -1,0 +1,213 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Aarav Sharma",
+      "carbonFootprint": {
+        "transport": 800,
+        "energy": 1200,
+        "waste": 400
+      }
+    },
+    {
+      "id": 2,
+      "name": "Ananya Gupta",
+      "carbonFootprint": {
+        "transport": 600,
+        "energy": 900,
+        "waste": 300
+      }
+    },
+    {
+      "id": 3,
+      "name": "Vivaan Singh",
+      "carbonFootprint": {
+        "transport": 1000,
+        "energy": 1100,
+        "waste": 500
+      }
+    },
+    {
+      "id": 4,
+      "name": "Diya Patel",
+      "carbonFootprint": {
+        "transport": 750,
+        "energy": 950,
+        "waste": 350
+      }
+    },
+    {
+      "id": 5,
+      "name": "Arjun Reddy",
+      "carbonFootprint": {
+        "transport": 950,
+        "energy": 1250,
+        "waste": 450
+      }
+    },
+    {
+      "id": 6,
+      "name": "Aditi Nair",
+      "carbonFootprint": {
+        "transport": 500,
+        "energy": 800,
+        "waste": 250
+      }
+    },
+    {
+      "id": 7,
+      "name": "Kabir Khanna",
+      "carbonFootprint": {
+        "transport": 700,
+        "energy": 1000,
+        "waste": 400
+      }
+    },
+    {
+      "id": 8,
+      "name": "Ishita Rao",
+      "carbonFootprint": {
+        "transport": 800,
+        "energy": 1100,
+        "waste": 450
+      }
+    },
+    {
+      "id": 9,
+      "name": "Aditya Desai",
+      "carbonFootprint": {
+        "transport": 900,
+        "energy": 1200,
+        "waste": 500
+      }
+    },
+    {
+      "id": 10,
+      "name": "Meera Iyer",
+      "carbonFootprint": {
+        "transport": 650,
+        "energy": 850,
+        "waste": 300
+      }
+    },
+    {
+      "id": 11,
+      "name": "Rohan Mehta",
+      "carbonFootprint": {
+        "transport": 1000,
+        "energy": 1300,
+        "waste": 550
+      }
+    },
+    {
+      "id": 12,
+      "name": "Sneha Ghosh",
+      "carbonFootprint": {
+        "transport": 700,
+        "energy": 950,
+        "waste": 350
+      }
+    },
+    {
+      "id": 13,
+      "name": "Krishna Das",
+      "carbonFootprint": {
+        "transport": 600,
+        "energy": 850,
+        "waste": 300
+      }
+    },
+    {
+      "id": 14,
+      "name": "Tara Joshi",
+      "carbonFootprint": {
+        "transport": 800,
+        "energy": 1000,
+        "waste": 400
+      }
+    },
+    {
+      "id": 15,
+      "name": "Manan Chawla",
+      "carbonFootprint": {
+        "transport": 850,
+        "energy": 1100,
+        "waste": 450
+      }
+    },
+    {
+      "id": 16,
+      "name": "Naina Bajaj",
+      "carbonFootprint": {
+        "transport": 700,
+        "energy": 950,
+        "waste": 350
+      }
+    },
+    {
+      "id": 17,
+      "name": "Aryan Malhotra",
+      "carbonFootprint": {
+        "transport": 950,
+        "energy": 1200,
+        "waste": 500
+      }
+    },
+    {
+      "id": 18,
+      "name": "Ria Shah",
+      "carbonFootprint": {
+        "transport": 750,
+        "energy": 1000,
+        "waste": 400
+      }
+    },
+    {
+      "id": 19,
+      "name": "Dev Kapoor",
+      "carbonFootprint": {
+        "transport": 900,
+        "energy": 1100,
+        "waste": 450
+      }
+    },
+    {
+      "id": 20,
+      "name": "Sanya Verma",
+      "carbonFootprint": {
+        "transport": 850,
+        "energy": 1050,
+        "waste": 400
+      }
+    },
+    {
+      "id": 21,
+      "name": "Aditya",
+      "carbonFootprint": {
+        "transport": 705,
+        "energy": 1890,
+        "waste": 280
+      }
+    },
+    {
+      "name": "testuser",
+      "email": "testuser@example.com",
+      "carbonFootprint": {
+        "transport": "377.40",
+        "energy": "1462.20",
+        "waste": "300.00",
+        "total": "2139.60"
+      }
+    },
+    {
+      "name": "testuser",
+      "email": "testuser@gmail.com",
+      "carbonFootprint": {
+        "transport": "414.76",
+        "energy": "3014.12",
+        "waste": "70.50",
+        "total": "3499.38"
+      }
+    }
+  ]
+}
