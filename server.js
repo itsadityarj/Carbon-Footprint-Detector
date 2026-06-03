@@ -1,62 +1,59 @@
+const dns = require('node:dns');
+dns.setServers(['1.1.1.1', '8.8.8.8']); // Forces Node to use Cloudflare/Google DNS
+
+require('dotenv').config(); // Loads variables from .env file
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const fs = require('fs');
+const mongoose = require('mongoose');
 
 const app = express();
-const PORT = 3000;
-
-// Enable CORS
-app.use(cors());
+const PORT = process.env.PORT || 3000; 
 
 // Middleware
+app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static('public'));  // Serve static files from the 'public' folder
+app.use(express.static('public')); 
 
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log("Successfully connected to cloud MongoDB!"))
+    .catch(err => console.error("Database connection error:", err));
 
-// Simulated database file
-const databaseFile = 'database.json';
+// Define Database Blueprint (Schema & Model)
+const userSchema = new mongoose.Schema({
+    name: String,
+    email: String,
+    footprintData: mongoose.Schema.Types.Mixed // Accepts any nested calculator JSON structure
+}, { timestamps: true }); // Automatically adds createdAt and updatedAt timestamps
 
-// Handle POST requests to /data
-app.post('/data', (req, res) => {
-    const newUserData = req.body;
+const User = mongoose.model('User', userSchema);
 
-    // Read existing data
-    fs.readFile(databaseFile, 'utf-8', (err, data) => {
-        if (err) {
-            console.error("Error reading database:", err);
-            return res.status(500).json({ message: "Internal server error" });
-        }
+// Handle POST requests (Save Data)
+app.post('/data', async (req, res) => {
+    try {
+        const newUserData = req.body;
+        const user = new User(newUserData);
+        await user.save(); // Saves the JSON data as a document in MongoDB
 
-        const database = JSON.parse(data || '{"users": []}');
-        database.users.push(newUserData);
-
-        // Write updated data back to file
-        fs.writeFile(databaseFile, JSON.stringify(database, null, 2), (err) => {
-            if (err) {
-                console.error("Error writing to database:", err);
-                return res.status(500).json({ message: "Failed to save data" });
-            }
-
-            res.status(200).json({ message: "Data saved successfully" });
-        });
-    });
+        res.status(200).json({ message: "Data saved successfully" });
+    } catch (err) {
+        console.error("Error saving data:", err);
+        res.status(500).json({ message: "Internal server error" });
+    }
 });
 
-app.get('/data', (req, res) => {
-    // Read the current database and send it as a response
-    fs.readFile('database.json', (err, data) => {
-        if (err) {
-            res.status(500).send('Error reading database file');
-            return;
-        }
-
-        const database = JSON.parse(data);  // Parse the existing data
-        res.json(database);  // Send the data as JSON response
-    });
+// Handle GET requests (Fetch Data)
+app.get('/data', async (req, res) => {
+    try {
+        const users = await User.find({}); // Fetches everything from the collection
+        res.json({ users: users }); // Matches your original structure exactly
+    } catch (err) {
+        console.error("Error fetching data:", err);
+        res.status(500).send('Error reading database');
+    }
 });
 
-// Start the server
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });

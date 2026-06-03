@@ -1,5 +1,5 @@
-# Dependencies
 node_modules/
 
-# optional files
+.env
+database.json
 package-lock.json
