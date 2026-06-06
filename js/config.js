@@ -1,0 +1,1 @@
+const API_BASE_URL = 'https://carbon-footprint-detector.onrender.com';

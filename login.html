@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Carbon Footprint Calculator</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/login.js" defer></script>
 </head>
 <body>
     <header>
         <div class="myhead">
-            <img class="logo" src="new208.png">
+            <img class="logo" src="images/new208.png">
             <h1 class="mytitle">CarbonCalculator</h1>
         </div>
         <nav>
@@ -54,27 +55,6 @@
             <a href="#">Instagram</a>
         </p>
     </footer>
-
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault(); 
-
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value;
-
-            const users = JSON.parse(localStorage.getItem('users')) || [];
-
-            const user = users.find(u => u.username === username && u.password === password);
-
-            if (user) {
-                localStorage.setItem('loggedInUser', JSON.stringify(user)); 
-                alert('Login successful!');
-                window.location.href = 'index.html';
-            } else {
-                alert('Invalid username or password. Please try again.');
-            }
-        });
-    </script>
 
 </body>
 </html>
